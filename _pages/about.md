@@ -1,13 +1,13 @@
 ---
 permalink: /
-title: "Academic Pages is a ready-to-fork GitHub Pages template for academic personal websites"
+title: "About me"
 author_profile: true
 redirect_from: 
   - /about/
   - /about.html
 ---
 
-About me
+
 I’m Zongjiang Shang (尚宗江), a four-year (2021-now) Ph.D. student in State Key Lab of CAD&CG at Zhejiang University, advised by Prof. Ling Chen. I obtained a Bachelor's degree in Mechanical and Electronic Engineering from Northeast Forestry University in 2017, a Master's degree in Circuits and Systems from Northwestern Polytechnical University in 2019, and began pursuing a Ph.D. in Artificial Intelligence at Zhejiang University in 2021.
 
 A data-driven personal website
