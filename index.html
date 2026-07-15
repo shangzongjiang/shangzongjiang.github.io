@@ -8,6 +8,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/css/all.min.css" rel="stylesheet">
+<script>
+  (function(){
+    try{
+      var saved=localStorage.getItem('theme');
+      var preferred=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+      document.documentElement.dataset.theme=saved||preferred;
+      document.documentElement.dataset.lang=localStorage.getItem('language')||'zh';
+    }catch(e){}
+  })();
+</script>
 <style>
   :root{
     --paper:#F5F6F1;
@@ -21,7 +32,25 @@
     --gold-soft:#F3EADB;
     --steel:#4C6C8C;
     --steel-soft:#E7EDF3;
-    --max:920px;
+    --nav-bg:rgba(245,246,241,0.88);
+    --contact-bg:rgba(255,255,255,.62);
+    --max:1120px;
+  }
+  html[data-theme="dark"]{
+    color-scheme:dark;
+    --paper:#101613;
+    --paper-card:#18211C;
+    --ink:#EEF4EF;
+    --ink-soft:#B5C1B9;
+    --line:#34423A;
+    --pine:#73C5AA;
+    --pine-soft:#203A31;
+    --gold:#D7AA62;
+    --gold-soft:#433720;
+    --steel:#88AFD2;
+    --steel-soft:#243747;
+    --nav-bg:rgba(16,22,19,0.9);
+    --contact-bg:rgba(24,33,28,.82);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -32,6 +61,7 @@
     font-family:'Inter',sans-serif;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
+    transition:background-color .22s ease,color .22s ease;
   }
   ::selection{background:var(--pine-soft);color:var(--pine);}
   a{color:var(--pine);text-decoration:none;}
@@ -43,7 +73,7 @@
   /* NAV */
   nav.topnav{
     position:sticky;top:0;z-index:50;
-    background:rgba(245,246,241,0.88);
+    background:var(--nav-bg);
     backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);
   }
@@ -51,6 +81,27 @@
     max-width:var(--max);margin:0 auto;padding:14px 28px;
     display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
+  .navleft{display:flex;align-items:center;gap:10px;}
+  .theme-toggle{
+    width:42px;height:30px;display:grid;place-items:center;padding:0;
+    border:1px solid var(--line);border-radius:999px;background:var(--paper-card);
+    color:var(--gold);cursor:pointer;font-size:19px;line-height:1;
+    box-shadow:0 2px 7px rgba(24,36,32,.08);
+    transition:transform .18s ease,border-color .18s ease,background-color .18s ease;
+  }
+  .language-toggle{
+    height:30px;min-width:55px;padding:0 9px;border:1px solid var(--line);
+    border-radius:999px;background:var(--paper-card);color:var(--pine);
+    font-family:'Inter',sans-serif;font-size:11px;font-weight:700;cursor:pointer;
+    box-shadow:0 2px 7px rgba(24,36,32,.08);
+    transition:transform .18s ease,border-color .18s ease,background-color .18s ease;
+  }
+  .language-toggle:hover{transform:translateY(-1px);border-color:var(--pine);}
+  .theme-toggle:hover{transform:translateY(-1px);border-color:var(--gold);}
+  .theme-toggle .moon{color:#FFD43B;text-shadow:0 0 5px rgba(255,212,59,.38);}
+  .theme-toggle .sun{display:none;}
+  html[data-theme="dark"] .theme-toggle .moon{display:none;}
+  html[data-theme="dark"] .theme-toggle .sun{display:inline;}
   .navname{font-family:'Fraunces',serif;font-weight:600;font-size:17px;letter-spacing:0.02em;}
   .navlinks{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;}
   .navlinks::-webkit-scrollbar{display:none;}
@@ -63,14 +114,14 @@
   /* HERO */
   header.hero{position:relative;overflow:hidden;padding:50px 0 44px;border-bottom:1px solid var(--line);}
   .pulse-bg{position:absolute;inset:0;width:100%;height:100%;opacity:0.55;pointer-events:none;}
-  .hero-inner{position:relative;z-index:2;display:flex;gap:24px;align-items:flex-start;flex-wrap:nowrap;max-width:1120px;}
+  .hero-inner{position:relative;z-index:2;display:flex;gap:24px;align-items:flex-start;flex-wrap:nowrap;max-width:var(--max);}
   .hero-text{flex:1;min-width:280px;}
   .hero-photo{
     flex:0 0 35mm;
     width:35mm;
     height:49mm;
     margin:0;
-    background:#fff;
+    background:var(--paper-card);
     border:1px solid var(--line);
     border-radius:4px;
     box-shadow:0 5px 14px rgba(24,36,32,0.08);
@@ -89,9 +140,21 @@
     text-align:justify;text-justify:inter-ideograph;text-align-last:left;
   }
   .role b{color:var(--ink);font-weight:600;}
-  .contact-row{margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:13px;}
-  .contact-row a{color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:2px;}
-  .contact-row a:hover{border-color:var(--pine);color:var(--pine);text-decoration:none;}
+  .contact-row{margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;font-size:12.5px;}
+  .contact-item{
+    display:inline-flex;align-items:center;gap:7px;min-height:34px;
+    padding:5px 10px;color:var(--pine);background:var(--contact-bg);
+    border:1px solid var(--line);border-radius:10px;white-space:nowrap;
+    box-shadow:0 2px 6px rgba(24,36,32,.04);
+  }
+  a.contact-item:hover{
+    border-color:var(--pine);color:var(--pine);background:var(--pine-soft);
+    text-decoration:none;transform:translateY(-1px);
+  }
+  .contact-icon{
+    width:17px;display:inline-flex;align-items:center;justify-content:center;
+    color:var(--pine);font-size:16px;
+  }
   .hero-text .chips{margin-top:8px;}
   @media(max-width:700px){
     header.hero{padding:36px 0 34px;}
@@ -111,8 +174,56 @@
   #publications{padding-top:28px;}
   .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;}
   .sec-head .idx{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--gold);}
+  .sec-icon{width:25px;text-align:center;font-size:21px;line-height:1;}
   .sec-head h2{font-size:26px;}
   .lede{color:var(--ink-soft);max-width:640px;margin-bottom:20px;font-size:15.5px;}
+
+  /* RESEARCH DIRECTIONS */
+  .research-grid{
+    display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:10px;margin-top:16px;
+  }
+  .research-card{
+    --card-accent:var(--pine);--card-soft:var(--pine-soft);
+    position:relative;overflow:hidden;min-height:210px;
+    padding:16px 14px 14px;background:var(--paper-card);
+    border:1px solid var(--line);border-radius:12px;
+    box-shadow:0 4px 14px rgba(24,36,32,.04);
+  }
+  .research-card::before{
+    content:"";position:absolute;top:0;left:0;width:100%;height:5px;
+    background:var(--card-accent);
+  }
+  .research-card:nth-child(2){--card-accent:#3d6991;--card-soft:#e7edf3;}
+  .research-card:nth-child(3){--card-accent:#76558a;--card-soft:#efe9f3;}
+  .research-card:nth-child(4){--card-accent:#a9782b;--card-soft:#f3eadb;}
+  html[data-theme="dark"] .research-card:nth-child(2){--card-accent:#88afd2;--card-soft:#243747;}
+  html[data-theme="dark"] .research-card:nth-child(3){--card-accent:#bd96d2;--card-soft:#392b43;}
+  html[data-theme="dark"] .research-card:nth-child(4){--card-accent:#d7aa62;--card-soft:#433720;}
+  .research-card-head{display:flex;align-items:center;gap:8px;margin-bottom:9px;}
+  .research-card-no{
+    flex:0 0 31px;width:31px;height:31px;display:grid;place-items:center;
+    border:1px solid var(--line);border-radius:9px;background:var(--card-soft);
+    color:var(--card-accent);font-family:Georgia,'Times New Roman',serif;
+    font-size:19px;font-weight:400;line-height:1;
+  }
+  .research-card h3{
+    color:var(--card-accent);font-family:'Inter',sans-serif;
+    font-size:14px;font-weight:700;line-height:1.3;
+  }
+  .research-card p{margin:0;color:var(--ink-soft);font-size:12px;line-height:1.62;}
+  .research-card-body{color:var(--ink-soft);font-size:12px;line-height:1.62;}
+  .research-points{list-style:none;margin:5px 0 0;padding:0;}
+  .research-points li{position:relative;margin:2px 0;padding-left:11px;color:var(--card-accent);font-weight:700;}
+  .research-points li::before{content:"•";position:absolute;left:0;color:var(--card-accent);}
+  .research-card strong{color:var(--card-accent);font-weight:700;}
+  @media(max-width:780px){
+    .research-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .research-card{min-height:0;}
+  }
+  @media(max-width:480px){
+    .research-grid{grid-template-columns:1fr;}
+  }
 
   /* TIMELINE (education/experience) */
   .tl-item{display:grid;grid-template-columns:150px 1fr;gap:16px;padding:11px 0;border-top:1px solid var(--line);}
@@ -154,6 +265,20 @@
   .patent-title-inline{color:var(--ink);font-weight:700;}
   .patent-number{color:var(--pine);font-family:'JetBrains Mono',monospace;font-size:13px;white-space:nowrap;}
 
+  /* HONORS */
+  .award-list{list-style:none;margin:0;padding:0;}
+  .award-item{
+    display:grid;grid-template-columns:12px minmax(0,1fr) auto;
+    align-items:baseline;gap:12px;padding:10px 0;color:var(--ink);
+  }
+  .award-item::before{content:"•";font-size:20px;color:var(--gold);line-height:1;}
+  .award-title{font-family:'Fraunces',serif;font-size:18px;font-weight:600;}
+  .award-year{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--ink-soft);}
+  @media(max-width:480px){
+    .award-item{grid-template-columns:12px 1fr;gap:8px 10px;}
+    .award-year{grid-column:2;}
+  }
+
   /* DIVIDER */
   .divider{width:100%;height:28px;opacity:0.45;}
 
@@ -161,20 +286,34 @@
   footer{padding:30px 0 42px;text-align:center;color:var(--ink-soft);font-size:13px;}
   footer a{color:var(--ink-soft);border-bottom:1px solid var(--line);}
   footer a:hover{color:var(--pine);}
+  html[data-theme="dark"] .pulse-bg{opacity:.35;}
+  html[data-theme="dark"] .pulse-bg path:nth-child(1){stroke:#73C5AA;}
+  html[data-theme="dark"] .pulse-bg path:nth-child(2){stroke:#D7AA62;}
+  html[data-theme="dark"] .pulse-bg path:nth-child(3){stroke:#88AFD2;}
+  @media(prefers-reduced-motion:reduce){
+    body,.theme-toggle,.language-toggle{transition:none;}
+  }
 </style>
 </head>
 <body>
 
 <nav class="topnav">
   <div class="navrow">
-    <span class="navname">尚宗江</span>
+    <div class="navleft">
+      <button class="theme-toggle" type="button" aria-label="切换为深色模式" title="切换浅色/深色模式">
+        <span class="moon" aria-hidden="true">☾</span>
+        <span class="sun" aria-hidden="true">☀︎</span>
+      </button>
+      <button class="language-toggle" type="button" aria-label="切换为英文" title="切换中文/英文">中 / EN</button>
+      <span class="navname" data-i18n="navName">尚宗江</span>
+    </div>
     <div class="navlinks">
-      <a href="#about">简介</a>
-      <a href="#education">教育背景</a>
-      <a href="#publications">论文</a>
-      <a href="#patents">专利</a>
-      <a href="#skills">技能</a>
-      <a href="#contact">联系</a>
+      <a href="#about" data-i18n="navAbout">简介</a>
+      <a href="#education" data-i18n="navEducation">教育背景</a>
+      <a href="#publications" data-i18n="navPublications">论文</a>
+      <a href="#patents" data-i18n="navPatents">专利</a>
+      <a href="#skills" data-i18n="navSkills">技能</a>
+      <a href="#honors" data-i18n="navHonors">荣誉奖项</a>
     </div>
   </div>
 </nav>
@@ -187,25 +326,40 @@
   </svg>
   <div class="wrap hero-inner">
     <figure class="hero-photo">
-      <img src="./images/szj.jpg" alt="尚宗江个人照片">
+      <img src="./szj.jpg" alt="尚宗江个人照片" data-i18n-alt="photoAlt">
     </figure>
     <div class="hero-text">
       <div class="hero-identity">
-        <h1 class="name">尚宗江<span class="name-en">Zongjiang Shang</span></h1>
+        <h1 class="name" data-i18n="heroName">尚宗江<span class="name-en">Zongjiang Shang</span></h1>
       </div>
-      <p class="role">浙江大学软件学院人工智能方向博士研究生，师从 <b>陈岭教授</b>。研究方向为<b>时序分析</b>、<b>超图神经网络</b>与<b>大语言模型对齐</b>，致力于用多尺度建模的方式理解现实世界中复杂的时间序列信号。</p>
+      <p class="role" data-i18n="heroRole">浙江大学软件学院人工智能方向博士研究生，师从 <b>陈岭教授</b>。研究方向为<b>时序分析</b>、<b>超图神经网络</b>与<b>大语言模型对齐</b>，致力于用多尺度建模的方式理解现实世界中复杂的时间序列信号。</p>
       <div class="contact-row">
-        <a href="mailto:zongjiangshang@cs.zju.edu.cn">zongjiangshang@cs.zju.edu.cn</a>
-        <a href="https://github.com/shangzongjiang" target="_blank" rel="noopener">github.com/shangzongjiang</a>
-        <a href="./Zongjiang_Shang_CV.pdf" target="_blank" rel="noopener">下载简历 PDF</a>
+        <a class="contact-item" href="mailto:zongjiangshang@cs.zju.edu.cn" aria-label="发送邮件至 zongjiangshang@cs.zju.edu.cn" title="zongjiangshang@cs.zju.edu.cn">
+          <i class="contact-icon fa-solid fa-envelope" aria-hidden="true"></i><span>zongjiangshang@cs.zju.edu.cn</span>
+        </a>
+        <a class="contact-item" href="https://github.com/shangzongjiang" target="_blank" rel="noopener" aria-label="访问 GitHub 主页">
+          <i class="contact-icon fa-brands fa-github" aria-hidden="true"></i><span>GitHub</span>
+        </a>
+        <span class="contact-item" title="WeChat: talented__jiang">
+          <i class="contact-icon fa-brands fa-weixin" aria-hidden="true"></i><span>talented__jiang</span>
+        </span>
+        <a class="contact-item" href="https://xhslink.com/m/9T7qKFW1PWM" target="_blank" rel="noopener" aria-label="访问小红书主页">
+          <i class="contact-icon fa-solid fa-book-open" aria-hidden="true"></i><span data-i18n="xiaohongshu">小红书</span>
+        </a>
+        <a class="contact-item" href="https://orcid.org/0009-0001-8938-7437" target="_blank" rel="noopener" aria-label="访问 ORCID 主页" title="0009-0001-8938-7437">
+          <i class="contact-icon fa-brands fa-orcid" aria-hidden="true"></i><span>ORCID</span>
+        </a>
+        <a class="contact-item" href="./Zongjiang_Shang_CV.pdf" target="_blank" rel="noopener" aria-label="下载个人简历 PDF">
+          <i class="contact-icon fa-solid fa-file-pdf" aria-hidden="true"></i><span data-i18n="cvPdf">简历 PDF</span>
+        </a>
       </div>
       <div class="chips">
-        <span class="chip">时序预测</span>
-        <span class="chip">超图神经网络</span>
+        <span class="chip" data-i18n="chipForecasting">时序预测</span>
+        <span class="chip" data-i18n="chipHypergraph">超图神经网络</span>
         <span class="chip">Transformer</span>
-        <span class="chip">大语言模型对齐</span>
-        <span class="chip">多模态大模型</span>
-        <span class="chip">智能体</span>
+        <span class="chip" data-i18n="chipAlignment">大语言模型对齐</span>
+        <span class="chip" data-i18n="chipMultimodal">多模态大模型</span>
+        <span class="chip" data-i18n="chipAgents">智能体</span>
       </div>
     </div>
   </div>
@@ -214,54 +368,117 @@
 <main class="wrap">
 
   <section id="about">
-    <div class="sec-head"><span class="idx">01</span><h2>简介</h2></div>
-    <p class="lede" style="max-width:100%;">
+    <div class="sec-head"><span class="idx">01</span><span class="sec-icon" aria-hidden="true">👨‍💻</span><h2 data-i18n="aboutHeading">简介</h2></div>
+    <p class="lede" style="max-width:100%;" data-i18n="aboutText">
       我目前在浙江大学软件学院攻读人工智能方向博士学位，导师为陈岭教授（浙大青年学者、鸿程软件研究院副院长）。
       我的研究聚焦于时序分析中的多尺度建模问题：如何用超图神经网络刻画变量间的群体交互，
       以及如何借助大语言模型的知识与推理能力提升时序预测的准确性与泛化性。
       至今已发表论文 20 余篇，其中 6 篇为 CCF-A 类一作 / 学生一作论文，1 篇 CORE A 类会议论文，
       并获得 NeurIPS 2024 Scholar Award。日常也承担 ICML、NeurIPS、AAAI、TKDE、KDD 等会议与期刊的审稿工作。
     </p>
+
+    <div class="research-grid" aria-label="主要研究方向">
+      <article class="research-card">
+        <div class="research-card-head">
+          <span class="research-card-no" aria-hidden="true">⚗︎</span>
+          <h3>AI for Science</h3>
+        </div>
+        <div class="research-card-body" data-i18n="researchScience">
+          <div>面向地球系统与科学计算场景：</div>
+          <ul class="research-points">
+            <li>Weather Forecasting</li>
+            <li>Climate Forecasting</li>
+            <li>Earth Foundation Model</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="research-card">
+        <div class="research-card-head">
+          <span class="research-card-no" aria-hidden="true">⌬</span>
+          <h3>Deep Learning Architectures</h3>
+        </div>
+        <div class="research-card-body" data-i18n="researchArchitectures">
+          <div>探索新型深度学习架构设计：</div>
+          <ul class="research-points">
+            <li>Hypergraph Neural Networks</li>
+            <li>Graph Neural Networks</li>
+            <li>State Space Models (Mamba)</li>
+            <li>Neural ODE</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="research-card">
+        <div class="research-card-head">
+          <span class="research-card-no" aria-hidden="true">◎</span>
+          <h3>Foundation Models</h3>
+        </div>
+        <div class="research-card-body" data-i18n="researchFoundation">
+          <div>研究通用表征学习、知识迁移与自主推理模型：</div>
+          <ul class="research-points">
+            <li>Large Language Models (LLMs)</li>
+            <li>Time Series Foundation Models</li>
+            <li>AI Agents</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="research-card">
+        <div class="research-card-head">
+          <span class="research-card-no" aria-hidden="true">⚙︎</span>
+          <h3>Automated Machine Learning</h3>
+        </div>
+        <div class="research-card-body" data-i18n="researchAutoML">
+          <div>聚焦于机器学习系统的自动化设计与优化，提升模型性能、效率和可扩展性：</div>
+          <ul class="research-points">
+            <li>Neural Architecture Search</li>
+            <li>Automated Deep Learning</li>
+            <li>Efficient AI</li>
+          </ul>
+        </div>
+      </article>
+    </div>
   </section>
 
   <section id="education">
-    <div class="sec-head"><span class="idx">02</span><h2>教育背景</h2></div>
+    <div class="sec-head"><span class="idx">02</span><span class="sec-icon" aria-hidden="true">🎓</span><h2 data-i18n="educationHeading">教育背景</h2></div>
 
     <div class="tl-item">
       <div class="tl-date">2021.09 – 2026.03</div>
       <div>
-        <div class="tl-org">浙江大学 · 软件学院</div>
-        <div class="tl-sub">人工智能 · 博士研究生 &nbsp;|&nbsp; 导师：<strong>陈岭教授（陈纯院士团队）</strong></div>
+        <div class="tl-org" data-i18n="eduZjuOrg">浙江大学 · 软件学院</div>
+        <div class="tl-sub" data-i18n="eduZjuSub">人工智能 · 博士研究生 &nbsp;|&nbsp; 导师：<strong>陈岭教授（陈纯院士团队）</strong></div>
       </div>
     </div>
 
     <div class="tl-item">
       <div class="tl-date">2020.06 – 2021.06</div>
       <div>
-        <div class="tl-org">崂山国家实验室</div>
-        <div class="tl-sub">助理工程师 &nbsp;|&nbsp; <strong>笪良龙院士团队</strong></div>
+        <div class="tl-org" data-i18n="eduLaoshanOrg">崂山国家实验室</div>
+        <div class="tl-sub" data-i18n="eduLaoshanSub">助理工程师 &nbsp;|&nbsp; <strong>笪良龙院士团队</strong></div>
       </div>
     </div>
 
     <div class="tl-item">
       <div class="tl-date">2017.09 – 2020.06</div>
       <div>
-        <div class="tl-org">西北工业大学 · 电子信息学院</div>
-        <div class="tl-sub">电路与系统 · 硕士研究生 &nbsp;|&nbsp; 导师：<strong>吴俊（IEEE Member, ACM Member, CCF Member）</strong></div>
+        <div class="tl-org" data-i18n="eduNwpuOrg">西北工业大学 · 电子信息学院</div>
+        <div class="tl-sub" data-i18n="eduNwpuSub">电路与系统 · 硕士研究生 &nbsp;|&nbsp; 导师：<strong>吴俊（IEEE Member, ACM Member, CCF Member）</strong></div>
       </div>
     </div>
 
     <div class="tl-item">
       <div class="tl-date">2013.09 – 2017.06</div>
       <div>
-        <div class="tl-org">东北林业大学 · 机械工程学院</div>
-        <div class="tl-sub">机械电子工程 · 本科</div>
+        <div class="tl-org" data-i18n="eduNefuOrg">东北林业大学 · 机械工程学院</div>
+        <div class="tl-sub" data-i18n="eduNefuSub">机械电子工程 · 本科</div>
       </div>
     </div>
   </section>
 
   <section id="publications">
-    <div class="sec-head"><span class="idx">03</span><h2>论文</h2></div>
+    <div class="sec-head"><span class="idx">03</span><span class="sec-icon" aria-hidden="true">📖</span><h2 data-i18n="publicationsHeading">论文</h2></div>
 
     <ol class="pub-list">
       <li class="pub"><span class="pub-authors"><strong>Zongjiang Shang</strong>, Dongliang Cui, Binqing Wu, Ling Chen</span>, <span class="pub-title-inline">Multi-scale hypergraph meets LLMs: Aligning large language models for time series analysis.</span> <span class="pub-venue-inline">[ICLR 2026]</span></li>
@@ -288,17 +505,17 @@
   </section>
 
   <section id="patents">
-    <div class="sec-head"><span class="idx">04</span><h2>专利</h2></div>
+    <div class="sec-head"><span class="idx">04</span><span class="sec-icon" aria-hidden="true">💡</span><h2 data-i18n="patentsHeading">专利</h2></div>
     <ol class="patent-list">
-      <li class="patent-item"><span class="patent-title-inline">一种基于层次化超图神经网络的电力负载预测方法</span> <span class="patent-number">[202310432912.5]</span></li>
-      <li class="patent-item"><span class="patent-title-inline">一种基于自适应多尺度超图神经网络的电力负载预测方法</span> <span class="patent-number">[202411011366.9]</span></li>
-      <li class="patent-item"><span class="patent-title-inline">一种基于多尺度超图神经网络和大语言模型对齐的电力负载预测方法</span> <span class="patent-number">[202510546395.3]</span></li>
+      <li class="patent-item"><span class="patent-title-inline" data-i18n="patentOne">一种基于层次化超图神经网络的电力负载预测方法</span> <span class="patent-number">[202310432912.5]</span></li>
+      <li class="patent-item"><span class="patent-title-inline" data-i18n="patentTwo">一种基于自适应多尺度超图神经网络的电力负载预测方法</span> <span class="patent-number">[202411011366.9]</span></li>
+      <li class="patent-item"><span class="patent-title-inline" data-i18n="patentThree">一种基于多尺度超图神经网络和大语言模型对齐的电力负载预测方法</span> <span class="patent-number">[202510546395.3]</span></li>
     </ol>
   </section>
 
   <section id="skills">
-    <div class="sec-head"><span class="idx">05</span><h2>专业技能</h2></div>
-    <p class="lede" style="max-width:100%;">
+    <div class="sec-head"><span class="idx">05</span><span class="sec-icon" aria-hidden="true">💻</span><h2 data-i18n="skillsHeading">专业技能</h2></div>
+    <p class="lede" style="max-width:100%;" data-i18n="skillsText">
       熟悉图神经网络、超图神经网络、Transformer 的基本理论；掌握大语言模型对齐、多模态大模型、
       大模型训练与微调相关技术。长期承担 ICML、NeurIPS、AAAI、TKDE、KDD 等顶级期刊与会议的审稿任务。
     </p>
@@ -313,24 +530,127 @@
     </div>
   </section>
 
-  <section id="contact">
-    <div class="sec-head"><span class="idx">06</span><h2>联系方式</h2></div>
-    <p class="lede" style="max-width:100%;">
-      欢迎围绕时序分析、超图神经网络或大语言模型对齐方向交流合作。可通过以下方式联系我：
-    </p>
-    <div class="contact-row" style="margin-top:0;">
-      <a href="mailto:zongjiangshang@cs.zju.edu.cn">zongjiangshang@cs.zju.edu.cn</a>
-      <a href="https://github.com/shangzongjiang" target="_blank" rel="noopener">GitHub</a>
-      <a href="./Zongjiang_Shang_CV.pdf" target="_blank" rel="noopener">下载简历 PDF</a>
-    </div>
-    <p class="tl-sub" style="margin-top:12px;">浙江大学 · 玉泉校区 · 曹光彪楼 · 普适计算实验室 616-B 室</p>
+  <section id="honors">
+    <div class="sec-head"><span class="idx">06</span><span class="sec-icon" aria-hidden="true">🎖️</span><h2 data-i18n="honorsHeading">荣誉奖项</h2></div>
+    <ul class="award-list">
+      <li class="award-item">
+        <span class="award-title">ICML 2026 Silver Reviewer Award</span>
+        <span class="award-year">2026</span>
+      </li>
+      <li class="award-item">
+        <span class="award-title">NeurIPS 2024 Scholar Award</span>
+        <span class="award-year">2024</span>
+      </li>
+    </ul>
   </section>
 
 </main>
 
 <footer>
-  <p>© 2026 尚宗江 Zongjiang Shang · 最近更新于 2026 年 7 月</p>
+  <p data-i18n="footer">© 2026 尚宗江 Zongjiang Shang · 最近更新于 2026 年 7 月</p>
 </footer>
+
+<script>
+  (function(){
+    var button=document.querySelector('.theme-toggle');
+    if(!button)return;
+    function updateLabel(){
+      var dark=document.documentElement.dataset.theme==='dark';
+      var english=document.documentElement.dataset.lang==='en';
+      button.setAttribute('aria-label',english?(dark?'Switch to light mode':'Switch to dark mode'):(dark?'切换为浅色模式':'切换为深色模式'));
+    }
+    updateLabel();
+    button.addEventListener('click',function(){
+      var next=document.documentElement.dataset.theme==='dark'?'light':'dark';
+      document.documentElement.dataset.theme=next;
+      try{localStorage.setItem('theme',next);}catch(e){}
+      updateLabel();
+    });
+  })();
+</script>
+
+<script>
+  (function(){
+    var button=document.querySelector('.language-toggle');
+    if(!button)return;
+
+    var english={
+      navName:'Zongjiang Shang',
+      navAbout:'About',
+      navEducation:'Education',
+      navPublications:'Publications',
+      navPatents:'Patents',
+      navSkills:'Skills',
+      navHonors:'Honors & Awards',
+      heroName:'Zongjiang Shang<span class="name-en">尚宗江</span>',
+      heroRole:'Ph.D. candidate in Artificial Intelligence at the School of Software Technology, Zhejiang University, advised by <b>Prof. Ling Chen</b>. My research focuses on <b>time series analysis</b>, <b>hypergraph neural networks</b>, and <b>large language model alignment</b>, with the goal of understanding complex real-world temporal signals through multi-scale modeling.',
+      xiaohongshu:'Xiaohongshu',
+      cvPdf:'CV PDF',
+      chipForecasting:'Time Series Forecasting',
+      chipHypergraph:'Hypergraph Neural Networks',
+      chipAlignment:'LLM Alignment',
+      chipMultimodal:'Multimodal LLMs',
+      chipAgents:'AI Agents',
+      aboutHeading:'About',
+      aboutText:'I am currently pursuing a Ph.D. in Artificial Intelligence at the School of Software Technology, Zhejiang University, under the supervision of Prof. Ling Chen (Zhejiang University Young Scholar and Vice Dean of the Hongcheng Institute of Software). My research investigates multi-scale modeling for time series analysis, including hypergraph neural networks for group-wise interactions among variables and large language models for improving forecasting accuracy and generalization. I have published more than 20 papers, including six CCF-A first-author or student-first-author papers and one CORE A conference paper, and received the NeurIPS 2024 Scholar Award. I also serve as a reviewer for ICML, NeurIPS, AAAI, TKDE, KDD, and other leading venues.',
+      researchScience:'<div>For earth systems and scientific computing:</div><ul class="research-points"><li>Weather Forecasting</li><li>Climate Forecasting</li><li>Earth Foundation Model</li></ul>',
+      researchArchitectures:'<div>Exploring novel deep learning architecture design:</div><ul class="research-points"><li>Hypergraph Neural Networks</li><li>Graph Neural Networks</li><li>State Space Models (Mamba)</li><li>Neural ODE</li></ul>',
+      researchFoundation:'<div>Research on models for general representation learning, knowledge transfer, and autonomous reasoning:</div><ul class="research-points"><li>Large Language Models (LLMs)</li><li>Time Series Foundation Models</li><li>AI Agents</li></ul>',
+      researchAutoML:'<div>Focused on the automated design and optimization of machine learning systems to improve model performance, efficiency, and scalability:</div><ul class="research-points"><li>Neural Architecture Search</li><li>Automated Deep Learning</li><li>Efficient AI</li></ul>',
+      educationHeading:'Education & Experience',
+      eduZjuOrg:'Zhejiang University · School of Software Technology',
+      eduZjuSub:'Artificial Intelligence · Ph.D. Candidate &nbsp;|&nbsp; Advisor: <strong>Prof. Ling Chen (Academician Chun Chen\'s Team)</strong>',
+      eduLaoshanOrg:'Laoshan National Laboratory',
+      eduLaoshanSub:'Assistant Engineer &nbsp;|&nbsp; <strong>Academician Lianglong Da\'s Team</strong>',
+      eduNwpuOrg:'Northwestern Polytechnical University · School of Electronics and Information',
+      eduNwpuSub:'Circuits and Systems · Master\'s Degree &nbsp;|&nbsp; Advisor: <strong>Jun Wu (IEEE Member, ACM Member, CCF Member)</strong>',
+      eduNefuOrg:'Northeast Forestry University · College of Mechanical and Electrical Engineering',
+      eduNefuSub:'Mechatronic Engineering · Bachelor\'s Degree',
+      publicationsHeading:'Publications',
+      patentsHeading:'Patents',
+      patentOne:'A Power Load Forecasting Method Based on Hierarchical Hypergraph Neural Networks',
+      patentTwo:'A Power Load Forecasting Method Based on Adaptive Multi-scale Hypergraph Neural Networks',
+      patentThree:'A Power Load Forecasting Method Based on Multi-scale Hypergraph Neural Networks and Large Language Model Alignment',
+      skillsHeading:'Technical Skills',
+      skillsText:'I am familiar with the fundamental theory of graph neural networks, hypergraph neural networks, and Transformers, and have hands-on experience in large language model alignment, multimodal models, model training, and fine-tuning. I regularly review for leading conferences and journals, including ICML, NeurIPS, AAAI, TKDE, and KDD.',
+      honorsHeading:'Honors & Awards',
+      footer:'© 2026 Zongjiang Shang · Last updated July 2026'
+    };
+
+    var chinese={};
+    document.querySelectorAll('[data-i18n]').forEach(function(node){
+      chinese[node.dataset.i18n]=node.innerHTML;
+    });
+    var photo=document.querySelector('[data-i18n-alt="photoAlt"]');
+    var chinesePhotoAlt=photo?photo.alt:'';
+
+    function applyLanguage(lang){
+      var useEnglish=lang==='en';
+      document.documentElement.dataset.lang=useEnglish?'en':'zh';
+      document.documentElement.lang=useEnglish?'en':'zh-CN';
+      document.querySelectorAll('[data-i18n]').forEach(function(node){
+        var key=node.dataset.i18n;
+        node.innerHTML=useEnglish?english[key]:chinese[key];
+      });
+      if(photo)photo.alt=useEnglish?'Portrait of Zongjiang Shang':chinesePhotoAlt;
+      var themeButton=document.querySelector('.theme-toggle');
+      var dark=document.documentElement.dataset.theme==='dark';
+      button.setAttribute('aria-label',useEnglish?'Switch to Chinese':'切换为英文');
+      button.title=useEnglish?'Switch Chinese / English':'切换中文/英文';
+      if(themeButton){
+        themeButton.setAttribute('aria-label',useEnglish?(dark?'Switch to light mode':'Switch to dark mode'):(dark?'切换为浅色模式':'切换为深色模式'));
+      }
+      var grid=document.querySelector('.research-grid');
+      if(grid)grid.setAttribute('aria-label',useEnglish?'Main research directions':'主要研究方向');
+      try{localStorage.setItem('language',useEnglish?'en':'zh');}catch(e){}
+    }
+
+    applyLanguage(document.documentElement.dataset.lang||'zh');
+    button.addEventListener('click',function(){
+      applyLanguage(document.documentElement.dataset.lang==='en'?'zh':'en');
+    });
+  })();
+</script>
 
 </body>
 </html>
