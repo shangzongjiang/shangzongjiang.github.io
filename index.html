@@ -32,6 +32,7 @@
     --gold-soft:#F3EADB;
     --steel:#4C6C8C;
     --steel-soft:#E7EDF3;
+    --accent-blue:#2E83D2;
     --nav-bg:rgba(245,246,241,0.88);
     --contact-bg:rgba(255,255,255,.62);
     --max:1120px;
@@ -49,6 +50,7 @@
     --gold-soft:#433720;
     --steel:#88AFD2;
     --steel-soft:#243747;
+    --accent-blue:#69ABE8;
     --nav-bg:rgba(16,22,19,0.9);
     --contact-bg:rgba(24,33,28,.82);
   }
@@ -177,6 +179,7 @@
   .sec-icon{width:25px;text-align:center;font-size:21px;line-height:1;}
   .sec-head h2{font-size:26px;}
   .lede{color:var(--ink-soft);max-width:640px;margin-bottom:20px;font-size:15.5px;}
+  .about-highlight{color:var(--accent-blue);font-weight:600;}
 
   /* RESEARCH DIRECTIONS */
   .research-grid{
@@ -354,12 +357,14 @@
         </a>
       </div>
       <div class="chips">
-        <span class="chip" data-i18n="chipForecasting">时序预测</span>
+        <span class="chip" data-i18n="chipForecasting">时间序列预测</span>
+        <span class="chip" data-i18n="chipAnomaly">工业异常检测</span>
+        <span class="chip" data-i18n="chipSpatiotemporal">时空数据挖掘</span>
+        <span class="chip" data-i18n="chipAI4Science">AI for Science</span>
         <span class="chip" data-i18n="chipHypergraph">超图神经网络</span>
-        <span class="chip">Transformer</span>
-        <span class="chip" data-i18n="chipAlignment">大语言模型对齐</span>
-        <span class="chip" data-i18n="chipMultimodal">多模态大模型</span>
+        <span class="chip" data-i18n="chipFoundation">大模型</span>
         <span class="chip" data-i18n="chipAgents">智能体</span>
+        <span class="chip" data-i18n="chipAutoML">AutoML</span>
       </div>
     </div>
   </div>
@@ -370,11 +375,9 @@
   <section id="about">
     <div class="sec-head"><span class="idx">01</span><span class="sec-icon" aria-hidden="true">👨‍💻</span><h2 data-i18n="aboutHeading">简介</h2></div>
     <p class="lede" style="max-width:100%;" data-i18n="aboutText">
-      我目前在浙江大学软件学院攻读人工智能方向博士学位，导师为陈岭教授（浙大青年学者、鸿程软件研究院副院长）。
-      我的研究聚焦于时序分析中的多尺度建模问题：如何用超图神经网络刻画变量间的群体交互，
-      以及如何借助大语言模型的知识与推理能力提升时序预测的准确性与泛化性。
-      至今已发表论文 20 余篇，其中 6 篇为 CCF-A 类一作 / 学生一作论文，1 篇 CORE A 类会议论文，
-      并获得 NeurIPS 2024 Scholar Award。日常也承担 ICML、NeurIPS、AAAI、TKDE、KDD 等会议与期刊的审稿工作。
+      我的研究主要围绕人工智能驱动的复杂时空数据分析与智能建模展开，重点面向<span class="about-highlight">时间序列预测、工业异常检测以及地球系统与气候科学</span>等应用场景。
+      重点涉及四个相关联的方向：面向地球系统建模与气候分析的人工智能科学研究；新型深度学习框架研究；
+      基于通用表征学习、知识迁移与自主推理的大模型、大语言模型以及智能体研究；聚焦于机器学习系统的自动化设计与优化算法研究。
     </p>
 
     <div class="research-grid" aria-label="主要研究方向">
@@ -435,6 +438,7 @@
             <li>Neural Architecture Search</li>
             <li>Automated Deep Learning</li>
             <li>Efficient AI</li>
+            <li>LLM Fine-tuning</li>
           </ul>
         </div>
       </article>
@@ -587,16 +591,19 @@
       xiaohongshu:'Xiaohongshu',
       cvPdf:'CV PDF',
       chipForecasting:'Time Series Forecasting',
+      chipAnomaly:'Industrial Anomaly Detection',
+      chipSpatiotemporal:'Spatio-temporal Data Mining',
+      chipAI4Science:'AI for Science',
       chipHypergraph:'Hypergraph Neural Networks',
-      chipAlignment:'LLM Alignment',
-      chipMultimodal:'Multimodal LLMs',
+      chipFoundation:'Foundation Models',
       chipAgents:'AI Agents',
+      chipAutoML:'AutoML',
       aboutHeading:'About',
-      aboutText:'I am currently pursuing a Ph.D. in Artificial Intelligence at the School of Software Technology, Zhejiang University, under the supervision of Prof. Ling Chen (Zhejiang University Young Scholar and Vice Dean of the Hongcheng Institute of Software). My research investigates multi-scale modeling for time series analysis, including hypergraph neural networks for group-wise interactions among variables and large language models for improving forecasting accuracy and generalization. I have published more than 20 papers, including six CCF-A first-author or student-first-author papers and one CORE A conference paper, and received the NeurIPS 2024 Scholar Award. I also serve as a reviewer for ICML, NeurIPS, AAAI, TKDE, KDD, and other leading venues.',
+      aboutText:'My research centers on AI-driven analysis and intelligent modeling of complex spatio-temporal data, with applications in <span class="about-highlight">time series forecasting, industrial anomaly detection, and earth system and climate science</span>. It spans four interconnected directions: AI for Science for earth system modeling and climate analysis; novel deep learning frameworks; foundation models, large language models, and AI agents based on general representation learning, knowledge transfer, and autonomous reasoning; and algorithms for the automated design and optimization of machine learning systems.',
       researchScience:'<div>For earth systems and scientific computing:</div><ul class="research-points"><li>Weather Forecasting</li><li>Climate Forecasting</li><li>Earth Foundation Model</li></ul>',
       researchArchitectures:'<div>Exploring novel deep learning architecture design:</div><ul class="research-points"><li>Hypergraph Neural Networks</li><li>Graph Neural Networks</li><li>State Space Models (Mamba)</li><li>Neural ODE</li></ul>',
       researchFoundation:'<div>Research on models for general representation learning, knowledge transfer, and autonomous reasoning:</div><ul class="research-points"><li>Large Language Models (LLMs)</li><li>Time Series Foundation Models</li><li>AI Agents</li></ul>',
-      researchAutoML:'<div>Focused on the automated design and optimization of machine learning systems to improve model performance, efficiency, and scalability:</div><ul class="research-points"><li>Neural Architecture Search</li><li>Automated Deep Learning</li><li>Efficient AI</li></ul>',
+      researchAutoML:'<div>Focused on the automated design and optimization of machine learning systems to improve model performance, efficiency, and scalability:</div><ul class="research-points"><li>Neural Architecture Search</li><li>Automated Deep Learning</li><li>Efficient AI</li><li>LLM Fine-tuning</li></ul>',
       educationHeading:'Education & Experience',
       eduZjuOrg:'Zhejiang University · School of Software Technology',
       eduZjuSub:'Artificial Intelligence · Ph.D. Candidate &nbsp;|&nbsp; Advisor: <strong>Prof. Ling Chen (Academician Chun Chen\'s Team)</strong>',
